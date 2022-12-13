@@ -1,17 +1,43 @@
 import { useState } from 'react'
 
-const Statistics = ({ category, value }) => (
-  <div>{category} {value}</div>
-)
-
 const Button = ({ handleClick, text }) => (
   <button onClick={handleClick}>
     {text}
   </button>
 )
 
+const StatisticLine = ({ category, value }) => (
+  <p>{category} {value}</p>
+)
+
+const Statistics = (props) => {
+  const { good, bad, neutral } = props
+
+  const all = () => {
+    return good + neutral + bad
+  }
+
+  const average = () => {
+    return (good - bad) / all()
+  }
+
+  const positive = () => {
+    return <>{Math.trunc((good / all()) * 100)}%</>
+  }
+
+  return (
+    <>
+      <StatisticLine category="good" value={good} />
+      <StatisticLine category="neutral" value={neutral} />
+      <StatisticLine category="bad" value={bad} />
+      <StatisticLine category="all" value={all()} />
+      <StatisticLine category="average" value={average()} />
+      <StatisticLine category="positive" value={positive()} />
+    </>
+  )
+}
+
 const App = () => {
-  // save clicks of each button to its own state
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
@@ -27,18 +53,6 @@ const App = () => {
     return handler
   }
 
-  const all = () => {
-    return good + neutral + bad
-  }
-
-  const average = () => {
-    return (good - bad) / all()
-  }
-
-  const positive = () => {
-    return Math.trunc((good / all()) * 100)
-  }
-
   return (
     <>
       <h1>give feedback</h1>
@@ -49,14 +63,7 @@ const App = () => {
       {good == 0 && bad == 0 && neutral == 0 ?
         <p>No feedback given</p>
         :
-        <>
-          <Statistics category="good" value={good} />
-          <Statistics category="neutral" value={neutral} />
-          <Statistics category="bad" value={bad} />
-          <Statistics category="all" value={all()} />
-          <Statistics category="average" value={average()} />
-          <Statistics category="positive" value={positive()} />
-        </>
+        <Statistics good={good} bad={bad} neutral={neutral}></Statistics>
       }
     </>
   )
