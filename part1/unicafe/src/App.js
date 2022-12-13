@@ -25,6 +25,18 @@ const App = () => {
     return handler
   }
 
+  const all = () => {
+    return good + neutral + bad
+  }
+
+  const average = () => {
+    return (good - bad) / all()
+  }
+
+  const positive = () => {
+    return Math.trunc((good / all()) * 100)
+  }
+
   return (
     <>
       <h1>give feedback</h1>
@@ -35,6 +47,18 @@ const App = () => {
       <Statistics category="good" value={good} />
       <Statistics category="neutral" value={neutral} />
       <Statistics category="bad" value={bad} />
+      <Statistics category="all" value={all()} />
+      {good == 0 && bad == 0 && neutral == 0 ?
+        <>
+          <Statistics category="average" value="..." />
+          <Statistics category="positive" value="..." />
+        </>
+        :
+        <>
+          <Statistics category="average" value={average()} />
+          <Statistics category="positive" value={positive()} />
+        </>
+      }
     </>
   )
 }
