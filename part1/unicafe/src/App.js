@@ -1,10 +1,12 @@
 import { useState } from 'react'
 
-const Statistics = props => <div>{props.category} {props.value}</div>
+const Statistics = ({ category, value }) => (
+  <div>{category} {value}</div>
+)
 
-const Button = (props) => (
-  <button onClick={props.handleClick}>
-    {props.text}
+const Button = ({ handleClick, text }) => (
+  <button onClick={handleClick}>
+    {text}
   </button>
 )
 
