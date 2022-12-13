@@ -7,7 +7,11 @@ const Button = ({ handleClick, text }) => (
 )
 
 const StatisticLine = ({ category, value }) => (
-  <p>{category} {value}</p>
+  <tr>
+    <td>{category}</td>
+    <td>{value}</td>
+  </tr>
+
 )
 
 const Statistics = (props) => {
@@ -27,12 +31,22 @@ const Statistics = (props) => {
 
   return (
     <>
-      <StatisticLine category="good" value={good} />
-      <StatisticLine category="neutral" value={neutral} />
-      <StatisticLine category="bad" value={bad} />
-      <StatisticLine category="all" value={all()} />
-      <StatisticLine category="average" value={average()} />
-      <StatisticLine category="positive" value={positive()} />
+      <table border={2}>
+        <thead>
+          <tr>
+            <th>category</th>
+            <th>value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <StatisticLine category="good" value={good} />
+          <StatisticLine category="neutral" value={neutral} />
+          <StatisticLine category="bad" value={bad} />
+          <StatisticLine category="all" value={all()} />
+          <StatisticLine category="average" value={average()} />
+          <StatisticLine category="positive" value={positive()} />
+        </tbody>
+      </table>
     </>
   )
 }
