@@ -2,23 +2,41 @@ import { useState } from 'react'
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
+    {
+      name: 'Arto Hellas',
+      number: '35184423'
+    }
   ])
   const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
 
   const addName = (event) => {
     event.preventDefault()
     const nameObject = {
       name: newName,
+      number: newNumber,
+    }
+    const list = JSON.stringify(persons.map(x => x.name));
+    const name = JSON.stringify(nameObject.name)
+
+    if (name.length === 2) {
+      alert(`Debe completar un nombre`)
+    } else if (list.includes(name)) {
+      alert(`${newName} is already added to phonebook`)
+    } else {
+      setPersons(persons.concat(nameObject))
     }
 
-    setPersons(persons.concat(nameObject))
     setNewName('')
+    setNewNumber('')
   }
 
   const handleNameChange = (event) => {
-    // console.log(event.target.value)
     setNewName(event.target.value)
+  }
+
+  const handleNumberChange = (event) => {
+    setNewNumber(event.target.value)
   }
 
   return (
@@ -28,15 +46,18 @@ const App = () => {
         <div>
           name: <input
             value={newName}
-            onChange={handleNameChange}
-          />
-          &nbsp;
-          <button type="submit">add</button>
+            onChange={handleNameChange} />
         </div>
+        <div>
+          number: <input
+            value={newNumber}
+            onChange={handleNumberChange} />
+        </div>
+        <button type="submit">add</button>
       </form>
-      <h2>Names</h2>
+      <h2>Numbers</h2>
       <ul>{persons.map(x => (
-        <li key={x.name}>{x.name}</li>
+        <li key={x.name}>{x.name} {x.number}</li>
       ))}</ul>
     </div>
   )
