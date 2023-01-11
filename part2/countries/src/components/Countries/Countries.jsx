@@ -1,3 +1,11 @@
+const All = ({ list }) => {
+    return (
+        <ul>
+            {list.map(x => <li key={x.flag}>{x.name.common}</li>)}
+        </ul>
+    )
+}
+
 const Filtered = ({ list, search }) => {
     return (
         <ul>
@@ -40,7 +48,11 @@ export default function Countries({ list, search }) {
     let filteredList = []
     filteredList = list.filter(item => item.name.common.toLocaleLowerCase().includes(search))
 
-    if (filteredList.length > 10) {
+    if (search.toLocaleLowerCase() === "") {
+        return (
+            <All list={list} />
+        )
+    } else if (filteredList.length > 10) {
         return (
             <p>
                 Too many matches, specify another filter
