@@ -6,18 +6,29 @@ const All = ({ list }) => {
     )
 }
 
-const Filtered = ({ list, search }) => {
+const FilteredCountries = ({ list, search, changer }) => {
+    const filter = document.getElementById("filter")
+
     return (
         <ul>
             {list.filter((item) => {
+                const name = item.name.common
                 if (search.toLocaleLowerCase() === '') {
                     return item
                 } else {
-                    return item.name.common.toLocaleLowerCase().includes(search)
+                    return name.toLocaleLowerCase().includes(search)
                 }
             })
                 .map(item => {
-                    return <li key={item.flag}>{item.name.common}</li>
+                    const name = item.name.common
+                    return (
+                        <li key={item.flag}>
+                            {name} <input type={'button'} value={'show'} onClick={() => {
+                                changer(name.toLocaleLowerCase())
+                                filter.value = name.toLocaleLowerCase()
+                            }} />
+                        </li>
+                    )
                 })}
         </ul>
     )
@@ -44,7 +55,7 @@ const SingleCountry = ({ list, search }) => {
     )
 }
 
-export default function Countries({ list, search }) {
+export default function Countries({ list, search, stateChanger }) {
     let filteredList = []
     filteredList = list.filter(item => item.name.common.toLocaleLowerCase().includes(search))
 
@@ -64,7 +75,7 @@ export default function Countries({ list, search }) {
         )
     } else {
         return (
-            <Filtered list={list} search={search} />
+            <FilteredCountries list={list} search={search} changer={stateChanger} />
         )
     }
 }

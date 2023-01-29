@@ -1,5 +1,5 @@
 export default function Filter({ handleFilterChange }) {
     return (
-        <input onChange={handleFilterChange}></input>
+        <input id="filter" onChange={handleFilterChange}></input>
     )
 }
