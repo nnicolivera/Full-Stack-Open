@@ -11,7 +11,10 @@ export const App = () => {
   const [newNumber, setNewNumber] = useState('');
   const [search, setSearch] = useState('');
   const [focusFlag, setFocusFlag] = useState(false);
-  const [notification, setNotification] = useState(null);
+  const [notification, setNotification] = useState({
+    message: null,
+    type: ''
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,6 +31,19 @@ export const App = () => {
   const emptyInputs = () => {
     setNewName("");
     setNewNumber("");
+  }
+
+  const handleNotification = (message, type) => {
+    setNotification({
+      message: message,
+      type: type
+    });
+    setTimeout(() => {
+      setNotification({
+        message: null,
+        type: null,
+      });
+    }, 3000);
   }
 
   const addName = (event) => {
@@ -51,27 +67,31 @@ export const App = () => {
 
     if (existingPerson && existingPerson.number === newNumber) {
       alert(`${newName} is already added to phonebook`);
-      console.log(newNumber.valueOf());
       return
     }
 
     if (existingPerson) {
       if (window.confirm(`${newName} is already added to phonebook, replace the old number with the new one?`)) {
         const changedNumber = { ...existingPerson, number: newNumber };
-        personService.update(existingPerson.id, changedNumber);
-        setPersons(persons.map(person => person.id !== existingPerson.id ? person : changedNumber));
-        setNotification(`Changed ${newName}'s phone number`);
-        setTimeout(() => {
-          setNotification(null);
-        }, 4000);
+        const updateNumber = async () => {
+          await personService.update(existingPerson.id, changedNumber);
+          setPersons(persons.map(person => person.id !== existingPerson.id ? person : changedNumber));
+          handleNotification(`Changed ${newName}'s phone number`, 'success');
+        }
+
+        const handleError = async () => {
+          try {
+            await updateNumber();
+          } catch (error) {
+            handleNotification(`Information of ${existingPerson.name} has already been removed from server`, 'error');
+          }
+        }
+        handleError();
       }
     } else {
       personService.create(nameObject);
       setPersons(persons.concat(nameObject));
-      setNotification(`Added ${newName}`);
-      setTimeout(() => {
-        setNotification(null);
-      }, 4000);
+      handleNotification(`Added ${newName}`, 'success');
     }
     emptyInputs();
     setFocusFlag(true);
@@ -88,7 +108,7 @@ export const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <Notification message={notification} />
+      <Notification notification={notification} />
       <div>filter shown with <Filter handleFilterChange={(e) => setSearch(e.target.value)} /></div>
       <h2>Add a new</h2>
       <AddForm

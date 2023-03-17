@@ -21,7 +21,7 @@ const App = () => {
 
   const toggleImportanceOf = id => {
     const note = notes.find(n => n.id === id);
-    const changedNote = { ...note, important: !note.important }
+    const changedNote = { ...note, important: !note.important };
 
     noteService
       .update(id, changedNote)
@@ -30,7 +30,7 @@ const App = () => {
       })
       .catch(error => {
         setErrorMessage(
-          `Note '${note.content}' was already removed from the server`);
+          `Note '${note.content}' was already been removed from server`);
         setTimeout(() => {
           setErrorMessage(null);
         }, 5000);
