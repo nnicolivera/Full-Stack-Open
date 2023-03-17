@@ -11,7 +11,6 @@ export default function AddForm(props) {
         setFocusFlag(false);
     }, [focusFlag]);
 
-
     return (
         <form onSubmit={submit}>
             <div>
