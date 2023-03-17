@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import AddForm from './components/AddForm/AddForm';
 import Filter from './components/Filter/Filter';
+import { Notification } from './components/Notification/Notification';
 import Persons from './components/Persons/Persons';
 import personService from './services/persons';
 
@@ -10,6 +11,7 @@ export const App = () => {
   const [newNumber, setNewNumber] = useState('');
   const [search, setSearch] = useState('');
   const [focusFlag, setFocusFlag] = useState(false);
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,10 +60,18 @@ export const App = () => {
         const changedNumber = { ...existingPerson, number: newNumber };
         personService.update(existingPerson.id, changedNumber);
         setPersons(persons.map(person => person.id !== existingPerson.id ? person : changedNumber));
+        setNotification(`Changed ${newName}'s phone number`);
+        setTimeout(() => {
+          setNotification(null);
+        }, 4000);
       }
     } else {
       personService.create(nameObject);
       setPersons(persons.concat(nameObject));
+      setNotification(`Added ${newName}`);
+      setTimeout(() => {
+        setNotification(null);
+      }, 4000);
     }
     emptyInputs();
     setFocusFlag(true);
@@ -78,6 +88,7 @@ export const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+      <Notification message={notification} />
       <div>filter shown with <Filter handleFilterChange={(e) => setSearch(e.target.value)} /></div>
       <h2>Add a new</h2>
       <AddForm
