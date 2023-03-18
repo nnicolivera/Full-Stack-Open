@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios'
-import Filter from './components/Filter/Filter'
-import Countries from './components/Countries/Countries'
-import Weather from './components/Weather/Weather'
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import Filter from './components/Filter/Filter';
+import Countries from './components/Countries/Countries';
+import Weather from './components/Weather/Weather';
 
 export default function App() {
   const [countries, setCountries] = useState([])
