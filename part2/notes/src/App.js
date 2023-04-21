@@ -5,7 +5,7 @@ import './index.css';
 import { Notification } from './components/Notification';
 import { Footer } from './components/Footer';
 
-const App = () => {
+export const App = () => {
   const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState('');
   const [showAll, setShowAll] = useState(true);
@@ -39,7 +39,12 @@ const App = () => {
   }
 
   const addNote = event => {
-    event.preventDefault()
+    event.preventDefault();
+    if (!newNote) {
+      alert("Must write something!");
+      return
+    }
+
     const noteObject = {
       content: newNote,
       important: Math.random() < 0.5,
@@ -94,6 +99,4 @@ const App = () => {
       <Footer />
     </div>
   )
-}
-
-export default App
+} 

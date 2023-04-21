@@ -61,7 +61,7 @@ export const App = () => {
     }
 
     if (!isNaN(+newName)) {
-      alert("Set a name!");
+      alert("Name only contains letters!");
       return;
     }
 
